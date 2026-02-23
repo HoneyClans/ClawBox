@@ -137,9 +137,14 @@ app.post('/api/chat', async (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
+// 沙盒模式：預設只監聽 127.0.0.1，不暴露給外網。雲端 VM 部署時設 HOST=0.0.0.0
+const HOST = process.env.HOST || '127.0.0.1';
+app.listen(PORT, HOST, () => {
     console.log(`\n🦞 ClawBox 啟動成功！`);
-    console.log(`👉 請在瀏覽器打開：http://localhost:${PORT}\n`);
+    console.log(`👉 請在瀏覽器打開：http://${HOST === '127.0.0.1' ? 'localhost' : HOST}:${PORT}\n`);
+    if (HOST === '127.0.0.1') {
+        console.log('🔒 沙盒模式：僅本機可訪問，外網無法連線。\n');
+    }
 }).on('error', (error) => {
     if (error.code === 'EADDRINUSE') {
         console.error(`\n❌ 端口 ${PORT} 已被占用，請嘗試使用其他端口或關閉占用該端口的程序。\n`);

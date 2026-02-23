@@ -23,6 +23,7 @@
 - [中文](#-clawbox)
   - [✨ 核心特色](#-核心特色)
   - [🚀 快速開始](#-快速開始)
+  - [🔒 安全運行與雲端部署](#-安全運行與雲端部署)
   - [📖 使用說明](#-使用說明)
   - [⚙️ 配置說明](#️-配置說明)
   - [🛠️ 技術棧](#️-技術棧)
@@ -32,6 +33,7 @@
 - [English](#-clawbox-1)
   - [✨ Core Features](#-core-features)
   - [🚀 Quick Start](#-quick-start)
+  - [🔒 Safe Run & Cloud Deployment](#-safe-run--cloud-deployment)
   - [📖 Usage](#-usage)
   - [⚙️ Configuration](#️-configuration)
   - [🛠️ Tech Stack](#️-tech-stack)
@@ -52,6 +54,7 @@
 
 - 🎨 **0 Code 視覺化介面**：告別黑漆漆的終端機，所有 API Key 設定、模型切換都在精美的網頁中完成
 - 🛡️ **視覺化權限沙盒**：預設關閉所有本地權限，防止 Prompt Injection 攻擊，點擊開關即可控制 AI 權限
+- 🔒 **預設沙盒監聽**：預設只監聽本機（127.0.0.1），外網無法連線；雲端部署時可設 `HOST=0.0.0.0`
 - ⚡ **極簡部署**：無需繁瑣的 `onboard` 流程，只需 `npm start` 即可啟動
 - 🔒 **安全優先**：所有敏感配置（API Key）僅存儲在本地，不會上傳到任何伺服器
 - 🌐 **跨平台支援**：支援 Windows、macOS、Linux
@@ -68,17 +71,23 @@
 
 ```bash
 # 1. 複製專案
-git clone https://github.com/your-username/ClawBox.git
+git clone https://github.com/HoneyClans/ClawBox.git
 cd ClawBox
 
 # 2. 安裝依賴
 npm install
 
-# 3. 啟動 ClawBox
+# 3. 啟動 ClawBox（預設僅本機可訪問，沙盒模式）
 npm start
+# 或明確沙盒：npm run start:safe
 ```
 
 啟動成功後，打開瀏覽器訪問 **http://localhost:3000**，輸入你的 OpenAI API Key 即可開始使用！
+
+### 🔒 安全運行與雲端部署
+
+- **本機測試**：預設只監聽 `127.0.0.1`，外網無法連線，適合安全測試。
+- **雲端 VM 部署**：若要在雲端虛擬機上運行（避免個人電腦資料外洩），請參閱 **[DEPLOY-SAFE.md](DEPLOY-SAFE.md)**，內有完整沙盒權限說明與 `HOST=0.0.0.0` 部署步驟。
 
 ### 📖 使用說明
 
@@ -164,6 +173,7 @@ We believe that having a powerful local AI assistant shouldn't require terminal 
 
 - 🎨 **0-Code Visual Interface**: Say goodbye to dark terminals. All API Key settings and model switching are done in a beautiful web interface
 - 🛡️ **Visual Permission Sandbox**: All local permissions are disabled by default to prevent Prompt Injection attacks. Toggle switches to control AI permissions
+- 🔒 **Sandbox by Default**: Server binds to localhost (127.0.0.1) only; set `HOST=0.0.0.0` for cloud deployment
 - ⚡ **Ultra-Simple Deployment**: No complicated `onboard` process, just `npm start` to launch
 - 🔒 **Security First**: All sensitive configurations (API Keys) are stored locally only, never uploaded to any server
 - 🌐 **Cross-Platform Support**: Works on Windows, macOS, and Linux
@@ -180,17 +190,23 @@ We believe that having a powerful local AI assistant shouldn't require terminal 
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/your-username/ClawBox.git
+git clone https://github.com/HoneyClans/ClawBox.git
 cd ClawBox
 
 # 2. Install dependencies
 npm install
 
-# 3. Start ClawBox
+# 3. Start ClawBox (default: localhost only, sandbox mode)
 npm start
+# Or explicitly: npm run start:safe
 ```
 
 After starting, open your browser and visit **http://localhost:3000**, then enter your OpenAI API Key to get started!
+
+### 🔒 Safe Run & Cloud Deployment
+
+- **Local testing**: By default the server binds to `127.0.0.1` only, so it is not reachable from the internet—ideal for safe testing.
+- **Cloud VM deployment**: To run on a cloud VM (e.g. to avoid exposing your personal machine), see **[DEPLOY-SAFE.md](DEPLOY-SAFE.md)** for sandbox behaviour and `HOST=0.0.0.0` deployment steps.
 
 ### 📖 Usage
 
