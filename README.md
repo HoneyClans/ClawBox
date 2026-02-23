@@ -94,6 +94,7 @@ npm start
 3. **權限控制**
    - `允許 AI 讀取本地系統資訊`：開啟後，AI 可以獲取系統時間等資訊
    - `允許 AI 執行系統終端機指令`：目前開發中，未來版本將支援
+     - ⚠️ **安全提示**：未來實現此功能時，將採用白名單機制和用戶確認機制，防止 Prompt Injection 攻擊
 
 ### ⚙️ 配置說明
 
@@ -108,6 +109,8 @@ npm start
 ```
 
 **注意**：`config.json` 已加入 `.gitignore`，不會被提交到 Git 倉庫，確保你的 API Key 安全。
+
+**首次運行**：如果 `config.json` 不存在，ClawBox 會自動使用預設設定啟動，你可以在 Web UI 中輸入 API Key。
 
 ### 🛠️ 技術棧
 
@@ -203,6 +206,7 @@ After starting, open your browser and visit **http://localhost:3000**, then ente
 3. **Permission Control**
    - `Allow AI to read local system information`: When enabled, AI can access system time and other information
    - `Allow AI to execute system terminal commands`: Currently in development, will be supported in future versions
+     - ⚠️ **Security Note**: When this feature is implemented, it will use a whitelist mechanism and user confirmation to prevent Prompt Injection attacks
 
 ### ⚙️ Configuration
 
@@ -217,6 +221,8 @@ All configurations are stored in the `config.json` file in the project root:
 ```
 
 **Note**: `config.json` is included in `.gitignore` and will not be committed to the Git repository, ensuring your API Key security.
+
+**First Run**: If `config.json` doesn't exist, ClawBox will automatically start with default settings, and you can enter your API Key in the Web UI.
 
 ### 🛠️ Tech Stack
 
