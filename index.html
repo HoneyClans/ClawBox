@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClawBox - 你的本地 AI 助理</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 font-sans text-gray-800">
+    <div class="max-w-4xl mx-auto p-6 mt-10">
+        <header class="mb-8 text-center">
+            <h1 class="text-4xl font-bold text-blue-600 mb-2">🦞 ClawBox</h1>
+            <p class="text-gray-500">0 Code 新手友好的本地 AI 代理控制台</p>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- 左側：安全與設定面板 -->
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                <h2 class="text-xl font-semibold mb-4 border-b pb-2">⚙️ 系統設定與安全權限</h2>
+                
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">OpenAI API Key</label>
+                    <input type="password" id="apiKey" class="w-full border-gray-300 rounded-lg p-2 border focus:ring-blue-500 focus:border-blue-500" placeholder="sk-...">
+                </div>
+
+                <div class="mb-4">
+                    <h3 class="text-sm font-medium text-gray-700 mb-2">🛡️ AI 本地權限控制 (預設關閉)</h3>
+                    <label class="flex items-center space-x-3 mb-2 cursor-pointer">
+                        <input type="checkbox" id="allowFileRead" class="form-checkbox h-5 w-5 text-blue-600 rounded">
+                        <span class="text-gray-700">允許 AI 讀取本地系統資訊 (如時間)</span>
+                    </label>
+                    <label class="flex items-center space-x-3 cursor-pointer opacity-50">
+                        <input type="checkbox" id="allowSystemCmd" disabled class="form-checkbox h-5 w-5 text-gray-400 rounded">
+                        <span class="text-gray-500">允許 AI 執行系統終端機指令 (開發中)</span>
+                    </label>
+                </div>
+
+                <button onclick="saveSettings()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-200">
+                    💾 儲存設定
+                </button>
+                <p id="saveStatus" class="text-green-600 text-sm mt-2 hidden">設定已儲存！</p>
+            </div>
+
+            <!-- 右側：AI 測試對話框 -->
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col h-[500px]">
+                <h2 class="text-xl font-semibold mb-4 border-b pb-2">💬 代理測試終端</h2>
+                
+                <div id="chatBox" class="flex-1 overflow-y-auto bg-gray-50 p-4 rounded-lg mb-4 border border-gray-200 space-y-3">
+                    <div class="text-gray-500 text-sm text-center">歡迎使用 ClawBox！請先儲存 API Key 後開始對話。</div>
+                </div>
+
+                <div class="flex gap-2">
+                    <input type="text" id="chatInput" class="flex-1 border-gray-300 rounded-lg p-2 border focus:ring-blue-500 focus:border-blue-500" placeholder="輸入指令，例如：現在幾點？" onkeypress="if(event.key === 'Enter') sendMessage()">
+                    <button onclick="sendMessage()" class="bg-gray-800 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded-lg transition duration-200">
+                        發送
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 初始化載入設定
+        fetch('/api/settings')
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error(`HTTP error! status: ${res.status}`);
+                }
+                return res.json();
+            })
+            .then(data => {
+                document.getElementById('apiKey').value = data.apiKey || '';
+                document.getElementById('allowFileRead').checked = data.allowFileRead || false;
+            })
+            .catch(error => {
+                console.error('載入設定失敗:', error);
+                const chatBox = document.getElementById('chatBox');
+                if (chatBox) {
+                    chatBox.innerHTML = `<div class="text-red-500 text-sm text-center">⚠️ 無法載入設定：${error.message}</div>`;
+                }
+            });
+
+        async function saveSettings() {
+            const apiKey = document.getElementById('apiKey').value;
+            const allowFileRead = document.getElementById('allowFileRead').checked;
+            
+            try {
+                const res = await fetch('/api/settings', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ apiKey, allowFileRead })
+                });
+
+                if (!res.ok) {
+                    throw new Error(`HTTP error! status: ${res.status}`);
+                }
+
+                const data = await res.json();
+                const status = document.getElementById('saveStatus');
+                if (status) {
+                    status.textContent = data.message || '設定已儲存！';
+                    status.classList.remove('hidden');
+                    setTimeout(() => status.classList.add('hidden'), 3000);
+                }
+            } catch (error) {
+                console.error('儲存設定失敗:', error);
+                const status = document.getElementById('saveStatus');
+                if (status) {
+                    status.textContent = `❌ 儲存失敗：${error.message}`;
+                    status.classList.remove('hidden');
+                    status.classList.add('text-red-600');
+                    setTimeout(() => {
+                        status.classList.add('hidden');
+                        status.classList.remove('text-red-600');
+                    }, 5000);
+                }
+            }
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            if (!message) return;
+
+            const chatBox = document.getElementById('chatBox');
+            if (!chatBox) return;
+
+            // 顯示用戶消息
+            chatBox.innerHTML += `<div class="text-right"><span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-lg inline-block">${escapeHtml(message)}</span></div>`;
+            input.value = '';
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            // 顯示載入中
+            const loadingId = 'loading-' + Date.now();
+            chatBox.innerHTML += `<div id="${loadingId}" class="text-left"><span class="text-gray-400 text-sm">AI 思考中...</span></div>`;
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            try {
+                const res = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message })
+                });
+
+                if (!res.ok) {
+                    throw new Error(`HTTP error! status: ${res.status}`);
+                }
+
+                const data = await res.json();
+
+                // 移除載入中
+                const loadingEl = document.getElementById(loadingId);
+                if (loadingEl) {
+                    loadingEl.remove();
+                }
+
+                // 顯示 AI 回覆
+                chatBox.innerHTML += `<div class="text-left"><span class="bg-gray-200 text-gray-800 px-3 py-1 rounded-lg inline-block whitespace-pre-wrap">${escapeHtml(data.reply || '無回覆')}</span></div>`;
+                chatBox.scrollTop = chatBox.scrollHeight;
+            } catch (error) {
+                console.error('發送消息失敗:', error);
+                
+                // 移除載入中
+                const loadingEl = document.getElementById(loadingId);
+                if (loadingEl) {
+                    loadingEl.remove();
+                }
+
+                // 顯示錯誤消息
+                chatBox.innerHTML += `<div class="text-left"><span class="bg-red-100 text-red-800 px-3 py-1 rounded-lg inline-block">❌ 請求失敗：${escapeHtml(error.message)}</span></div>`;
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }
+        }
+
+        // HTML 轉義函數，防止 XSS
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+    </script>
+</body>
+</html>

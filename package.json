@@ -1,0 +1,17 @@
+{
+  "name": "clawbox",
+  "version": "1.0.0",
+  "description": "0-Code 新手友好的本地 AI 代理 (強化版 OpenClaw 替代方案)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "openai": "^4.20.0",
+    "dotenv": "^16.3.1",
+    "cors": "^2.8.5"
+  },
+  "author": "Your Name",
+  "license": "MIT"
+}
