@@ -5,18 +5,37 @@ const fs = require('fs');
 
 const app = express();
 app.use(express.json());
-app.use(express.static('public')); // 提供前端網頁
 
-// 確保 public 資料夾存在
-const PUBLIC_DIR = path.join(__dirname, 'public');
-if (!fs.existsSync(PUBLIC_DIR)) {
-    fs.mkdirSync(PUBLIC_DIR, { recursive: true });
-    console.warn('⚠️  public 資料夾不存在，已自動創建。請確保 index.html 在 public 資料夾中。');
+// 智能檢測 index.html 位置（支援根目錄或 public 資料夾）
+const INDEX_HTML_ROOT = path.join(__dirname, 'index.html');
+const INDEX_HTML_PUBLIC = path.join(__dirname, 'public', 'index.html');
+let indexHtmlPath = null;
+
+if (fs.existsSync(INDEX_HTML_ROOT)) {
+    // 如果根目錄有 index.html，優先使用
+    indexHtmlPath = INDEX_HTML_ROOT;
+    console.log('✅ 檢測到 index.html 在根目錄');
+} else if (fs.existsSync(INDEX_HTML_PUBLIC)) {
+    // 否則使用 public 資料夾中的 index.html
+    indexHtmlPath = INDEX_HTML_PUBLIC;
+    app.use(express.static('public')); // 提供 public 資料夾中的靜態文件
+    console.log('✅ 檢測到 index.html 在 public 資料夾');
+} else {
+    // 如果都不存在，創建 public 資料夾並提示
+    const PUBLIC_DIR = path.join(__dirname, 'public');
+    if (!fs.existsSync(PUBLIC_DIR)) {
+        fs.mkdirSync(PUBLIC_DIR, { recursive: true });
+    }
+    console.warn('⚠️  找不到 index.html，請確保 index.html 在根目錄或 public 資料夾中。');
 }
 
-// 根路徑重定向到 index.html（更好的 UX）
+// 根路徑重定向到 index.html
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+    if (indexHtmlPath && fs.existsSync(indexHtmlPath)) {
+        res.sendFile(indexHtmlPath);
+    } else {
+        res.status(404).send('❌ 找不到 index.html 文件。請確保 index.html 在根目錄或 public 資料夾中。');
+    }
 });
 
 // 模擬本地資料庫 (儲存設定)
