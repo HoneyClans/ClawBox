@@ -1,14 +1,11 @@
 <div align="center">
-  <img src="./assets/GreenClaw_logo.png" alt="GreenClaw Logo" width="200"/>
-  <h1>GreenClaw</h1>
-  <p><em>OpenClaw 的零代碼替代方案 | No CLI, no Docker, no JSON config.</em></p>
-</div>
 
-<div align="center">
+<img src="./assets/GreenClaw_logo.png" alt="GreenClaw Logo" width="300"/>
 
 # 🦞 GreenClaw
 
-**你的 0 Code 本地 AI 代理 | Your 0-Code Local AI Agent**
+**你的 0 Code 本地 AI 代理網關 | Your 0-Code Local AI Agent Gateway**  
+*No CLI, no Docker, no JSON config.*
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node.js](https://img.shields.io/badge/Node.js-18%2B-green.svg)](https://nodejs.org/)
@@ -16,9 +13,12 @@
 
 **🇹🇼 [中文](#-greenclaw) | [🇺🇸 English](#-greenclaw-1)**
 
-一個受 OpenClaw 啟發，專為非程式設計師與注重安全性的用戶打造的本地 AI 代理網關。
+<br>
 
-*An OpenClaw-inspired local AI agent gateway designed for non-programmers and security-conscious users.*
+一個受 OpenClaw 啟發，專為非程式設計師與注重安全性的用戶打造的本地 AI 代理。  
+*An OpenClaw-inspired local AI agent designed for non-programmers and security-conscious users.*
+
+如果覺得好用，請給個 ⭐ Star 支持！
 
 </div>
 
