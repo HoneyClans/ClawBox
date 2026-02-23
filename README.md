@@ -1,6 +1,12 @@
 <div align="center">
+  <img src="./assets/GreenClaw_logo.png" alt="GreenClaw Logo" width="200"/>
+  <h1>GreenClaw</h1>
+  <p><em>OpenClaw 的零代碼替代方案 | No CLI, no Docker, no JSON config.</em></p>
+</div>
 
-# 🦞 ClawBox
+<div align="center">
+
+# 🦞 GreenClaw
 
 **你的 0 Code 本地 AI 代理 | Your 0-Code Local AI Agent**
 
@@ -8,7 +14,7 @@
 [![Node.js](https://img.shields.io/badge/Node.js-18%2B-green.svg)](https://nodejs.org/)
 [![OpenAI](https://img.shields.io/badge/OpenAI-GPT--4o--mini-blue.svg)](https://openai.com/)
 
-**🇹🇼 [中文](#-clawbox) | [🇺🇸 English](#-clawbox-1)**
+**🇹🇼 [中文](#-greenclaw) | [🇺🇸 English](#-greenclaw-1)**
 
 一個受 OpenClaw 啟發，專為非程式設計師與注重安全性的用戶打造的本地 AI 代理網關。
 
@@ -20,17 +26,18 @@
 
 ## 📋 目錄 / Table of Contents
 
-- [中文](#-clawbox)
+- [中文](#-greenclaw)
   - [✨ 核心特色](#-核心特色)
   - [🚀 快速開始](#-快速開始)
   - [🔒 安全運行與雲端部署](#-安全運行與雲端部署)
+  - [📤 上傳 GitHub](GITHUB-UPLOAD.md)
   - [📖 使用說明](#-使用說明)
   - [⚙️ 配置說明](#️-配置說明)
   - [🛠️ 技術棧](#️-技術棧)
   - [🗺️ 路線圖](#️-路線圖)
   - [🤝 貢獻指南](#-貢獻指南)
   - [📄 授權](#-授權)
-- [English](#-clawbox-1)
+- [English](#-greenclaw-1)
   - [✨ Core Features](#-core-features)
   - [🚀 Quick Start](#-quick-start)
   - [🔒 Safe Run & Cloud Deployment](#-safe-run--cloud-deployment)
@@ -43,12 +50,12 @@
 
 ---
 
-<a name="clawbox"></a>
-## 🦞 ClawBox
+<a name="greenclaw"></a>
+## 🦞 GreenClaw
 
-**ClawBox** 是一個受 [OpenClaw](https://github.com/psteinroe/openclaw) 啟發的本地 AI 代理網關，專為「非程式設計師」與「注重安全性」的用戶打造。
+**GreenClaw** 是一個受 [OpenClaw](https://github.com/psteinroe/openclaw) 啟發的本地 AI 代理網關，專為「非程式設計師」與「注重安全性」的用戶打造。
 
-我們認為，擁有一個強大的本地 AI 助理不應該需要懂終端機指令、Docker 或複雜的 JSON 配置。ClawBox 提供開箱即用的 **Web UI（視覺化控制台）**，並將安全權限交還給用戶。
+我們認為，擁有一個強大的本地 AI 助理不應該需要懂終端機指令、Docker 或複雜的 JSON 配置。GreenClaw 提供開箱即用的 **Web UI（視覺化控制台）**，並將安全權限交還給用戶。
 
 ### ✨ 核心特色
 
@@ -65,19 +72,19 @@
 
 - [Node.js](https://nodejs.org/) 18.0 或更高版本
 - [npm](https://www.npmjs.com/) 或 [yarn](https://yarnpkg.com/)
-- OpenAI API Key（可在 [OpenAI Platform](https://platform.openai.com/api-keys) 取得）
+- 任一支援服務的 API Key（OpenAI / Groq / Google Gemini / xAI / Anthropic / [OpenRouter](https://openrouter.ai/keys) 等，見下方「支援 AI 模型」）
 
 #### 安裝步驟
 
 ```bash
 # 1. 複製專案
-git clone https://github.com/HoneyClans/ClawBox.git
-cd ClawBox
+git clone https://github.com/HoneyClans/GreenClaw.git
+cd GreenClaw
 
 # 2. 安裝依賴
 npm install
 
-# 3. 啟動 ClawBox（預設僅本機可訪問，沙盒模式）
+# 3. 啟動 GreenClaw（預設僅本機可訪問，沙盒模式）
 npm start
 # 或明確沙盒：npm run start:safe
 ```
@@ -88,6 +95,7 @@ npm start
 
 - **本機測試**：預設只監聽 `127.0.0.1`，外網無法連線，適合安全測試。
 - **雲端 VM 部署**：若要在雲端虛擬機上運行（避免個人電腦資料外洩），請參閱 **[DEPLOY-SAFE.md](DEPLOY-SAFE.md)**，內有完整沙盒權限說明與 `HOST=0.0.0.0` 部署步驟。
+- **📤 開源發布**：上傳至 GitHub 前請閱 **[GITHUB-UPLOAD.md](GITHUB-UPLOAD.md)**，確保不上傳 `config.json` 等敏感檔，避免 API Key 與個人路徑外洩。
 
 ### 📖 使用說明
 
@@ -97,10 +105,20 @@ npm start
    - 點擊「儲存設定」
 
 2. **開始對話**
-   - 在「代理測試終端」中輸入你的問題或指令
-   - AI 會根據你設定的權限來回答問題或執行操作
+   - 在「對話」分頁輸入問題或指令，AI 會根據你設定的權限回答或執行操作。
 
-3. **權限控制**
+3. **圖片生成（DALL-E）**
+   - 切換至「圖片生成」分頁，輸入描述、選擇模型與尺寸後點「生成圖片」。
+   - 需使用 **OpenAI API Key**（可與對話共用，或於左側「圖片與搜索」區單獨填寫）。
+
+4. **網絡搜索（Bing）**
+   - 切換至「網絡搜索」分頁，輸入關鍵字即可搜尋。
+   - 需在 [Bing Web Search API](https://www.microsoft.com/en-us/bing/apis/bing-web-search-api) 申請訂閱金鑰，並在左側「圖片與搜索」填入 **Bing API Key**。
+
+5. **社群小編模式**
+   - 切換至「社群小編」分頁：可一鍵「生成貼文」文案、「生成配圖」、或「搜尋熱門趨勢」作為靈感。
+
+6. **權限控制**
    - `允許 AI 讀取本地系統資訊`：開啟後，AI 可以獲取系統時間等資訊
    - `允許 AI 執行系統終端機指令`：目前開發中，未來版本將支援
      - ⚠️ **安全提示**：未來實現此功能時，將採用白名單機制和用戶確認機制，防止 Prompt Injection 攻擊
@@ -112,31 +130,61 @@ npm start
 ```json
 {
   "apiKey": "sk-...",
+  "apiProvider": "openai",
+  "model": "gpt-4o-mini",
   "allowFileRead": false,
-  "allowSystemCmd": false
+  "allowSystemCmd": false,
+  "imageProvider": "dalle",
+  "imageApiKey": "",
+  "searchProvider": "bing",
+  "searchApiKey": "",
+  "socialTiktok": "",
+  "socialFacebook": "",
+  "socialInstagram": "",
+  "socialTwitter": "",
+  "socialYoutube": ""
 }
 ```
 
 **注意**：`config.json` 已加入 `.gitignore`，不會被提交到 Git 倉庫，確保你的 API Key 安全。
 
-**首次運行**：如果 `config.json` 不存在，ClawBox 會自動使用預設設定啟動，你可以在 Web UI 中輸入 API Key。
+**首次運行**：如果 `config.json` 不存在，GreenClaw 會自動使用預設設定啟動，你可以在 Web UI 中輸入 API Key。
+
+### 🤖 支援 AI 模型（官方直連 + OpenRouter 任選）
+
+**方式一：官方直連**（各自付費、用該廠商 API Key）
+
+| 服務 | 說明 | 取得 Key |
+|------|------|----------|
+| **OpenAI** | GPT-4o、GPT-4o-mini、GPT-4 Turbo | [platform.openai.com](https://platform.openai.com/api-keys) |
+| **Groq** | Llama、Mixtral、Gemma，免費額度 | [console.groq.com](https://console.groq.com) |
+| **xAI Grok** | Grok 2 / 3 / 4 系列 | [console.x.ai](https://console.x.ai) |
+| **Google Gemini** | Gemini 2.0 Flash、1.5 Pro/Flash 等 | [aistudio.google.com](https://aistudio.google.com/apikey) |
+| **Anthropic Claude** | Claude 3.5 Sonnet / Haiku、Claude 3 Opus | [console.anthropic.com](https://console.anthropic.com) |
+
+**方式二：OpenRouter**（一個 Key 用盡多種模型，含免費）
+
+| 系列 | 範例 |
+|------|------|
+| Gemini、GPT、Grok、Claude、Llama、Mistral、DeepSeek、Qwen 等 | 選「OpenRouter」後在模型清單切換 |
+
+圖片生成為 **DALL-E**（OpenAI）；更多影像/語音模型見路線圖。
 
 ### 🛠️ 技術棧
 
 - **後端框架**：Express.js
-- **AI 模型**：OpenAI GPT-4o-mini
+- **AI 模型**：OpenAI、Groq、xAI、Google Gemini、Anthropic Claude 官方直連 + OpenRouter 聚合
 - **前端框架**：原生 HTML + TailwindCSS
 - **運行環境**：Node.js
 
 ### 🗺️ 路線圖
 
-- [x] Web UI 控制台
-- [x] 基礎安全權限開關
-- [ ] 掃碼登入 WhatsApp / Telegram 機器人（無需配置 Token）
-- [ ] 視覺化工作流（拖拽自定義 AI 技能）
-- [ ] 支援本地開源模型（Ollama 整合）
-- [ ] 多語言介面支援
-- [ ] 插件系統
+- [x] Web UI 控制台、多 AI 模型（Gemini、Grok、GPT、Claude 等）
+- [x] 圖片生成：DALL-E（Stable Diffusion 預留）
+- [x] 網絡搜索：Bing（Google 預留）
+- [x] 社群小編模式
+- [ ] **影像 / 語音**：Sora、Veo、Runway-Gen、Kling、ElevenLabs、Hailuo、Seedance 等（規劃中）
+- [ ] 社交媒體連接、WhatsApp / Telegram、視覺化工作流、Ollama、插件系統
 
 ### 🤝 貢獻指南
 
@@ -162,12 +210,12 @@ npm start
 
 ---
 
-<a name="clawbox-1"></a>
-## 🦞 ClawBox
+<a name="greenclaw-1"></a>
+## 🦞 GreenClaw
 
-**ClawBox** is an OpenClaw-inspired local AI agent gateway designed for **non-programmers** and **security-conscious** users.
+**GreenClaw** is an OpenClaw-inspired local AI agent gateway designed for **non-programmers** and **security-conscious** users.
 
-We believe that having a powerful local AI assistant shouldn't require terminal commands, Docker knowledge, or complex JSON configurations. ClawBox provides an out-of-the-box **Web UI (Visual Dashboard)** and puts security permissions back in your hands.
+We believe that having a powerful local AI assistant shouldn't require terminal commands, Docker knowledge, or complex JSON configurations. GreenClaw provides an out-of-the-box **Web UI (Visual Dashboard)** and puts security permissions back in your hands.
 
 ### ✨ Core Features
 
@@ -190,13 +238,13 @@ We believe that having a powerful local AI assistant shouldn't require terminal 
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/HoneyClans/ClawBox.git
-cd ClawBox
+git clone https://github.com/HoneyClans/GreenClaw.git
+cd GreenClaw
 
 # 2. Install dependencies
 npm install
 
-# 3. Start ClawBox (default: localhost only, sandbox mode)
+# 3. Start GreenClaw (default: localhost only, sandbox mode)
 npm start
 # Or explicitly: npm run start:safe
 ```
@@ -238,7 +286,7 @@ All configurations are stored in the `config.json` file in the project root:
 
 **Note**: `config.json` is included in `.gitignore` and will not be committed to the Git repository, ensuring your API Key security.
 
-**First Run**: If `config.json` doesn't exist, ClawBox will automatically start with default settings, and you can enter your API Key in the Web UI.
+**First Run**: If `config.json` doesn't exist, GreenClaw will automatically start with default settings, and you can enter your API Key in the Web UI.
 
 ### 🛠️ Tech Stack
 
@@ -283,8 +331,8 @@ This project is licensed under the [MIT License](LICENSE).
 
 <div align="center">
 
-**Made with ❤️ by the ClawBox Team**
+**Made with ❤️ by the GreenClaw Team**
 
-[⬆ Back to Top](#-clawbox)
+[⬆ Back to Top](#-greenclaw)
 
 </div>

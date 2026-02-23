@@ -1,4 +1,4 @@
-# 🔒 ClawBox 安全運行與雲端部署指南
+# 🔒 GreenClaw 安全運行與雲端部署指南
 
 ## 沙盒權限說明
 
@@ -24,8 +24,8 @@ npm run start:safe
 
 ```bash
 # 1. 克隆專案
-git clone https://github.com/HoneyClans/ClawBox.git
-cd ClawBox
+git clone https://github.com/HoneyClans/GreenClaw.git
+cd GreenClaw
 
 # 2. 安裝依賴
 npm install

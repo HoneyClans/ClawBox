@@ -3,97 +3,298 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ClawBox - 你的本地 AI 助理</title>
+    <title>GreenClaw - 你的本地 AI 助理</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .tip-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+    </style>
 </head>
 <body class="bg-gray-50 font-sans text-gray-800">
-    <div class="max-w-4xl mx-auto p-6 mt-10">
-        <header class="mb-8 text-center">
-            <h1 class="text-4xl font-bold text-blue-600 mb-2">🦞 ClawBox</h1>
-            <p class="text-gray-500">0 Code 新手友好的本地 AI 代理控制台</p>
+    <div class="max-w-6xl mx-auto p-6 mt-4">
+        <header class="mb-6 text-center">
+            <img src="/assets/GreenClaw_logo.png" alt="GreenClaw" class="mx-auto w-full max-w-md object-contain block" style="max-height: 180px;" onerror="this.style.display='none'">
+            <p class="text-gray-500 mt-3 text-sm sm:text-base">0 Code 新手友好的本地 AI 代理控制台</p>
         </header>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <!-- 左側：安全與設定面板 -->
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                <h2 class="text-xl font-semibold mb-4 border-b pb-2">⚙️ 系統設定與安全權限</h2>
-                
-                <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">OpenAI API Key</label>
-                    <input type="password" id="apiKey" class="w-full border-gray-300 rounded-lg p-2 border focus:ring-blue-500 focus:border-blue-500" placeholder="sk-...">
+        <!-- 第一性原理：一句話懂 GreenClaw -->
+        <div class="tip-card text-white p-4 rounded-lg mb-4 shadow-lg">
+            <div class="flex items-start">
+                <span class="text-2xl mr-3">💡</span>
+                <div class="flex-1">
+                    <h3 class="font-bold mb-1">一句話搞懂：</h3>
+                    <p class="text-sm mb-2">GreenClaw = 只要一個 API Key，就能在本地用網頁跟各種 AI 聊天、生圖、搜尋，<strong>不用寫程式、不用裝複雜軟體</strong>。</p>
+                    <h3 class="font-bold mb-1 mt-2">超簡單三步驟：</h3>
+                    <ol class="text-sm space-y-1 list-decimal list-inside">
+                        <li>左邊選「AI 服務」（OpenAI / Groq 免費 / OpenRouter 多模型）</li>
+                        <li>輸入對應的 API Key，按「儲存設定」</li>
+                        <li>在「對話」分頁打字、或到「圖片生成」「網絡搜索」「社群小編」用其他功能</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- 可收合：使用教學與小貼士 -->
+        <div class="bg-white border border-gray-200 rounded-xl mb-6 overflow-hidden">
+            <button type="button" id="tipsToggleBtn" onclick="var c=document.getElementById('tipsContent'); c.classList.toggle('hidden'); this.querySelector('span').textContent=c.classList.contains('hidden')?'📖 展開使用教學與小貼士':'📖 收合使用教學與小貼士';" class="w-full text-left px-4 py-3 font-medium text-gray-700 hover:bg-gray-50 flex items-center justify-between">
+                <span>📖 展開使用教學與小貼士</span>
+                <span class="text-gray-400 text-sm">點擊展開/收合</span>
+            </button>
+            <div id="tipsContent" class="hidden px-4 pb-4 border-t border-gray-100">
+                <div class="pt-3 space-y-3 text-sm text-gray-600">
+                    <p><strong>🎯 對話：</strong>選好模型與 Key 後直接輸入問題。試試「幫我寫 TikTok 文案」或「用三句話解釋量子糾纏」。</p>
+                    <p><strong>🖼️ 圖片生成：</strong>用 OpenAI 的 DALL-E，需 OpenAI API Key（可與對話共用）。描述越具體，圖越貼近想像。</p>
+                    <p><strong>🌐 網絡搜索：</strong>需 Bing Web Search API 金鑰，在左側「圖片與搜索」填寫。可找熱門話題、查資料。</p>
+                    <p><strong>🦞 社群小編：</strong>一鍵生成貼文文案、配圖或熱門趨勢，適合發想靈感。</p>
+                    <p class="text-amber-700 bg-amber-50 p-2 rounded"><strong>小貼士：</strong>Groq 與 OpenRouter 有免費額度；OpenRouter 可選 Gemini、Grok、Claude 等，一個 Key 用多種模型。遇到 401 請檢查 Key 是否正確、有無多餘空格。</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- 左側：設定面板 -->
+            <div class="lg:col-span-1 space-y-6">
+                <!-- API Provider 和 Model 選擇 -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                    <h2 class="text-xl font-semibold mb-4 border-b pb-2">🤖 AI 模型設定</h2>
+                    <p class="text-xs text-gray-500 mb-3">💡 可選<strong>官方直連</strong>（OpenAI / Groq / xAI / Google / Anthropic）或<strong>OpenRouter</strong>（一個 Key 用多種模型）；Groq 有免費額度。</p>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">選擇 AI 服務</label>
+                        <select id="apiProvider" onchange="updateModels()" class="w-full border-gray-300 rounded-lg p-2 border focus:ring-blue-500 focus:border-blue-500">
+                            <!-- 由 /api/settings 動態填入：OpenAI、Groq、xAI、Google、Anthropic 官方 + OpenRouter -->
+                        </select>
+                        <p class="text-xs text-gray-500 mt-1" id="providerHint">載入中…</p>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">選擇模型</label>
+                        <select id="model" class="w-full border-gray-300 rounded-lg p-2 border focus:ring-blue-500 focus:border-blue-500">
+                            <!-- 動態填充 -->
+                        </select>
+                        <p class="text-xs text-gray-500 mt-1" id="modelHint">選擇適合你需求的模型</p>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">API Key</label>
+                        <input type="password" id="apiKey" class="w-full border-gray-300 rounded-lg p-2 border focus:ring-blue-500 focus:border-blue-500" placeholder="sk-or-v1-... 或 gsk_...">
+                        <div class="mt-2 text-xs text-gray-600 space-y-1">
+                            <p><strong>Groq 免費 Key：</strong> <a href="https://console.groq.com" target="_blank" class="text-blue-600 underline">console.groq.com</a></p>
+                            <p><strong>OpenRouter：</strong> <a href="https://openrouter.ai/keys" target="_blank" class="text-blue-600 underline">openrouter.ai/keys</a></p>
+                            <p class="text-amber-700 bg-amber-50 px-2 py-1 rounded mt-1">⚠️ 401 時：請到 openrouter.ai/keys 按 Create 新 Key，建立時只顯示一次，請即時複製貼上。</p>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <h3 class="text-sm font-medium text-gray-700 mb-2">🛡️ 安全權限 (預設關閉)</h3>
+                        <label class="flex items-center space-x-3 mb-2 cursor-pointer">
+                            <input type="checkbox" id="allowFileRead" class="form-checkbox h-5 w-5 text-blue-600 rounded">
+                            <span class="text-gray-700 text-sm">允許讀取系統資訊</span>
+                        </label>
+                    </div>
+
+                    <button onclick="saveSettings()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-200">
+                        💾 儲存設定
+                    </button>
+                    <p id="saveStatus" class="text-green-600 text-sm mt-2 hidden text-center">設定已儲存！</p>
                 </div>
 
-                <div class="mb-4">
-                    <h3 class="text-sm font-medium text-gray-700 mb-2">🛡️ AI 本地權限控制 (預設關閉)</h3>
-                    <label class="flex items-center space-x-3 mb-2 cursor-pointer">
-                        <input type="checkbox" id="allowFileRead" class="form-checkbox h-5 w-5 text-blue-600 rounded">
-                        <span class="text-gray-700">允許 AI 讀取本地系統資訊 (如時間)</span>
-                    </label>
-                    <label class="flex items-center space-x-3 cursor-pointer opacity-50">
-                        <input type="checkbox" id="allowSystemCmd" disabled class="form-checkbox h-5 w-5 text-gray-400 rounded">
-                        <span class="text-gray-500">允許 AI 執行系統終端機指令 (開發中)</span>
-                    </label>
+                <!-- 圖片 / 搜索 API Key -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                    <h2 class="text-xl font-semibold mb-4 border-b pb-2">🖼️ 圖片與搜索</h2>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">圖片生成 (DALL-E)</label>
+                        <input type="password" id="imageApiKey" class="w-full border-gray-300 rounded-lg p-2 border text-sm" placeholder="可留空，將使用上方 AI Key (OpenAI)">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">網絡搜索 (Bing)</label>
+                        <input type="password" id="searchApiKey" class="w-full border-gray-300 rounded-lg p-2 border text-sm" placeholder="Bing Web Search API 訂閱金鑰">
+                        <p class="text-xs text-gray-500 mt-1"><a href="https://www.microsoft.com/en-us/bing/apis/bing-web-search-api" target="_blank" class="text-blue-600 underline">申請 Bing API</a></p>
+                    </div>
                 </div>
-
-                <button onclick="saveSettings()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-200">
-                    💾 儲存設定
-                </button>
-                <p id="saveStatus" class="text-green-600 text-sm mt-2 hidden">設定已儲存！</p>
             </div>
 
-            <!-- 右側：AI 測試對話框 -->
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col h-[500px]">
-                <h2 class="text-xl font-semibold mb-4 border-b pb-2">💬 代理測試終端</h2>
-                
-                <div id="chatBox" class="flex-1 overflow-y-auto bg-gray-50 p-4 rounded-lg mb-4 border border-gray-200 space-y-3">
-                    <div class="text-gray-500 text-sm text-center">歡迎使用 ClawBox！請先儲存 API Key 後開始對話。</div>
+            <!-- 右側：主功能區（分頁） -->
+            <div class="lg:col-span-2">
+                <div class="flex gap-2 mb-4 border-b border-gray-200">
+                    <button type="button" onclick="switchTab('chat')" id="tab-chat" class="tab-btn px-4 py-2 rounded-t-lg font-medium bg-blue-100 text-blue-800 border-b-2 border-blue-600">💬 對話</button>
+                    <button type="button" onclick="switchTab('image')" id="tab-image" class="tab-btn px-4 py-2 rounded-t-lg font-medium text-gray-600 hover:bg-gray-100">🖼️ 圖片生成</button>
+                    <button type="button" onclick="switchTab('search')" id="tab-search" class="tab-btn px-4 py-2 rounded-t-lg font-medium text-gray-600 hover:bg-gray-100">🌐 網絡搜索</button>
+                    <button type="button" onclick="switchTab('community')" id="tab-community" class="tab-btn px-4 py-2 rounded-t-lg font-medium text-gray-600 hover:bg-gray-100">🦞 社群小編</button>
                 </div>
 
-                <div class="flex gap-2">
-                    <input type="text" id="chatInput" class="flex-1 border-gray-300 rounded-lg p-2 border focus:ring-blue-500 focus:border-blue-500" placeholder="輸入指令，例如：現在幾點？" onkeypress="if(event.key === 'Enter') sendMessage()">
-                    <button onclick="sendMessage()" class="bg-gray-800 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded-lg transition duration-200">
-                        發送
-                    </button>
+                <!-- 對話頁 -->
+                <div id="panel-chat" class="tab-panel bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col h-[560px]">
+                    <h2 class="text-xl font-semibold mb-4 border-b pb-2">💬 AI 對話終端</h2>
+                    <div id="chatBox" class="flex-1 overflow-y-auto bg-gray-50 p-4 rounded-lg mb-4 border border-gray-200 space-y-3">
+                        <div class="text-gray-500 text-sm text-center space-y-2">
+                            <p>👋 歡迎使用 GreenClaw！</p>
+                            <p>請先在左側設定 API Key，然後開始對話。</p>
+                            <div class="mt-4 p-3 bg-blue-50 rounded-lg text-left">
+                                <p class="font-semibold text-blue-800 mb-1">💡 小貼士：</p>
+                                <ul class="text-xs text-blue-700 space-y-1 list-disc list-inside">
+                                    <li>試試問：「幫我寫一段 TikTok 文案」</li>
+                                    <li>或：「分析一下最近熱門話題」</li>
+                                    <li>Groq 免費且速度超快，推薦新手使用！</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-2">
+                        <input type="text" id="chatInput" class="flex-1 border-gray-300 rounded-lg p-2 border focus:ring-blue-500 focus:border-blue-500" placeholder="輸入你的問題或指令..." onkeypress="if(event.key === 'Enter') sendMessage()">
+                        <button onclick="sendMessage()" class="bg-gray-800 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded-lg transition duration-200">發送</button>
+                    </div>
+                </div>
+
+                <!-- 圖片生成頁 -->
+                <div id="panel-image" class="tab-panel hidden bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col h-[560px]">
+                    <h2 class="text-xl font-semibold mb-4 border-b pb-2">🖼️ AI 圖片生成</h2>
+                    <p class="text-sm text-gray-500 mb-2">使用 DALL-E 生成圖片，請在左側「圖片與搜索」或 AI 設定填入 OpenAI API Key。</p>
+                    <p class="text-xs text-blue-600 mb-3">💡 小貼士：描述越具體越好，例如「一隻穿西裝的龍蝦在辦公室開會，卡通風格」。</p>
+                    <div class="mb-4 flex flex-wrap gap-4">
+                        <div class="flex-1 min-w-[200px]">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">模型</label>
+                            <select id="imageModel" class="w-full border rounded-lg p-2" onchange="updateImageSizes()"><option value="dall-e-3">DALL-E 3</option><option value="dall-e-2">DALL-E 2</option></select>
+                        </div>
+                        <div class="flex-1 min-w-[200px]">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">尺寸</label>
+                            <select id="imageSize" class="w-full border rounded-lg p-2"><option value="1024x1024">1024×1024</option><option value="1024x1792">1024×1792</option><option value="1792x1024">1792×1024</option></select>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">圖片描述</label>
+                        <textarea id="imagePrompt" class="w-full border rounded-lg p-2 h-24" placeholder="例：一隻穿西裝的龍蝦在辦公室開會"></textarea>
+                    </div>
+                    <button type="button" onclick="generateImage()" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-lg mb-4">生成圖片</button>
+                    <div id="imageResult" class="flex-1 min-h-[200px] bg-gray-50 rounded-lg border border-gray-200 p-4 flex items-center justify-center text-gray-500 text-sm">生成結果將顯示於此</div>
+                </div>
+
+                <!-- 網絡搜索頁 -->
+                <div id="panel-search" class="tab-panel hidden bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col h-[560px]">
+                    <h2 class="text-xl font-semibold mb-4 border-b pb-2">🌐 網絡搜索</h2>
+                    <p class="text-sm text-gray-500 mb-2">使用 Bing API 搜尋，請在左側「圖片與搜索」填入 Bing Web Search API 金鑰。</p>
+                    <p class="text-xs text-blue-600 mb-3">💡 小貼士：可搜熱門關鍵字當作社群靈感，或查資料後再回「對話」分頁請 AI 整理。</p>
+                    <div class="flex gap-2 mb-4">
+                        <input type="text" id="searchQuery" class="flex-1 border rounded-lg p-2" placeholder="輸入搜尋關鍵字..." onkeypress="if(event.key==='Enter') doSearch()">
+                        <button type="button" onclick="doSearch()" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg">搜尋</button>
+                    </div>
+                    <div id="searchResults" class="flex-1 overflow-y-auto space-y-3 text-sm">搜尋結果將顯示於此</div>
+                </div>
+
+                <!-- 社群小編頁 -->
+                <div id="panel-community" class="tab-panel hidden bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col h-[560px]">
+                    <h2 class="text-xl font-semibold mb-4 border-b pb-2">🦞 社群小編模式</h2>
+                    <p class="text-sm text-gray-500 mb-2">一鍵生成文案、配圖與熱門話題靈感，不用自己想梗。</p>
+                    <p class="text-xs text-blue-600 mb-4">💡 小貼士：先填「主題」再按「生成貼文」；配圖需 OpenAI Key；「熱門趨勢」會用搜尋結果幫你找靈感。</p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                        <div class="border border-gray-200 rounded-xl p-4 bg-blue-50">
+                            <h3 class="font-semibold text-blue-800 mb-2">📝 生成文案</h3>
+                            <input type="text" id="communityTopic" class="w-full border rounded-lg p-2 mb-2 text-sm" placeholder="主題，例：新品上市">
+                            <button type="button" onclick="communityCopy()" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-sm">生成貼文</button>
+                        </div>
+                        <div class="border border-gray-200 rounded-xl p-4 bg-purple-50">
+                            <h3 class="font-semibold text-purple-800 mb-2">🖼️ 生成配圖</h3>
+                            <input type="text" id="communityImagePrompt" class="w-full border rounded-lg p-2 mb-2 text-sm" placeholder="圖片描述">
+                            <button type="button" onclick="communityImage()" class="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 rounded-lg text-sm">生成圖片</button>
+                        </div>
+                        <div class="border border-gray-200 rounded-xl p-4 bg-green-50">
+                            <h3 class="font-semibold text-green-800 mb-2">🔥 熱門話題</h3>
+                            <button type="button" onclick="communityTrending()" class="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg text-sm">搜尋熱門趨勢</button>
+                        </div>
+                    </div>
+                    <div id="communityOutput" class="flex-1 overflow-y-auto bg-gray-50 rounded-lg border border-gray-200 p-4 text-sm whitespace-pre-wrap">輸出將顯示於此</div>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // 初始化載入設定
-        fetch('/api/settings')
-            .then(res => {
-                if (!res.ok) {
-                    throw new Error(`HTTP error! status: ${res.status}`);
+        let apiProviders = {};
+        let currentProvider = 'openai';
+
+        // 載入設定和 Providers
+        async function loadSettings() {
+            try {
+                const res = await fetch('/api/settings');
+                if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+                const data = await res.json();
+                
+                apiProviders = data.apiProviders || {};
+                currentProvider = data.apiProvider || 'openai';
+                
+                // 依 API 回傳的 provider 清單動態填寫「選擇 AI 服務」下拉（保留順序：官方先，再 OpenRouter）
+                const providerSelect = document.getElementById('apiProvider');
+                const providerKeys = Object.keys(apiProviders);
+                providerSelect.innerHTML = providerKeys.map(k => '<option value="' + k + '">' + (apiProviders[k].name || k) + '</option>').join('');
+                if (providerKeys.includes(currentProvider)) {
+                    providerSelect.value = currentProvider;
+                } else if (providerKeys.length) {
+                    providerSelect.value = providerKeys[0];
+                    currentProvider = providerKeys[0];
                 }
-                return res.json();
-            })
-            .then(data => {
                 document.getElementById('apiKey').value = data.apiKey || '';
                 document.getElementById('allowFileRead').checked = data.allowFileRead || false;
-            })
-            .catch(error => {
-                console.error('載入設定失敗:', error);
-                const chatBox = document.getElementById('chatBox');
-                if (chatBox) {
-                    chatBox.innerHTML = `<div class="text-red-500 text-sm text-center">⚠️ 無法載入設定：${error.message}</div>`;
+                if (document.getElementById('imageApiKey')) document.getElementById('imageApiKey').value = data.imageApiKey || '';
+                if (document.getElementById('searchApiKey')) document.getElementById('searchApiKey').value = data.searchApiKey || '';
+                
+                updateModels();
+                if (data.model) {
+                    document.getElementById('model').value = data.model;
                 }
+            } catch (error) {
+                console.error('載入設定失敗:', error);
+            }
+        }
+
+        // 更新模型列表
+        function updateModels() {
+            const provider = document.getElementById('apiProvider').value;
+            currentProvider = provider;
+            const providerData = apiProviders[provider] || { models: [] };
+            const modelSelect = document.getElementById('model');
+            
+            // 清空並填充模型選項
+            modelSelect.innerHTML = '';
+            providerData.models.forEach(model => {
+                const option = document.createElement('option');
+                option.value = model;
+                option.textContent = model;
+                if (model === providerData.defaultModel) {
+                    option.selected = true;
+                }
+                modelSelect.appendChild(option);
             });
 
+            // 更新提示（官方直連 vs 聚合）
+            const hints = {
+                openai: 'OpenAI 官方直連，需 OpenAI API Key',
+                groq: 'Groq 官方・免費額度・速度快',
+                xai: 'xAI Grok 官方直連，需 xAI API Key（console.x.ai）',
+                google: 'Google Gemini 官方直連，需 Google AI Studio API Key',
+                anthropic: 'Anthropic Claude 官方直連，需 Anthropic API Key',
+                openrouter: '一個 Key 用盡多種模型（Gemini、Grok、GPT、Claude 等），含免費'
+            };
+            document.getElementById('providerHint').textContent = hints[provider] || '選擇模型後儲存設定即可使用';
+        }
+
+        // 儲存設定
         async function saveSettings() {
             const apiKey = document.getElementById('apiKey').value;
+            const apiProvider = document.getElementById('apiProvider').value;
+            const model = document.getElementById('model').value;
             const allowFileRead = document.getElementById('allowFileRead').checked;
+            const imageApiKey = document.getElementById('imageApiKey') ? document.getElementById('imageApiKey').value : '';
+            const searchApiKey = document.getElementById('searchApiKey') ? document.getElementById('searchApiKey').value : '';
             
             try {
                 const res = await fetch('/api/settings', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ apiKey, allowFileRead })
+                    body: JSON.stringify({ apiKey, apiProvider, model, allowFileRead, imageApiKey, searchApiKey })
                 });
 
-                if (!res.ok) {
-                    throw new Error(`HTTP error! status: ${res.status}`);
-                }
+                if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
 
                 const data = await res.json();
                 const status = document.getElementById('saveStatus');
@@ -117,6 +318,7 @@
             }
         }
 
+        // 發送消息
         async function sendMessage() {
             const input = document.getElementById('chatInput');
             const message = input.value.trim();
@@ -132,7 +334,7 @@
 
             // 顯示載入中
             const loadingId = 'loading-' + Date.now();
-            chatBox.innerHTML += `<div id="${loadingId}" class="text-left"><span class="text-gray-400 text-sm">AI 思考中...</span></div>`;
+            chatBox.innerHTML += `<div id="${loadingId}" class="text-left"><span class="text-gray-400 text-sm">🤔 AI 思考中...</span></div>`;
             chatBox.scrollTop = chatBox.scrollHeight;
 
             try {
@@ -142,16 +344,18 @@
                     body: JSON.stringify({ message })
                 });
 
-                if (!res.ok) {
-                    throw new Error(`HTTP error! status: ${res.status}`);
-                }
-
-                const data = await res.json();
+                const data = await res.json().catch(() => ({}));
 
                 // 移除載入中
                 const loadingEl = document.getElementById(loadingId);
-                if (loadingEl) {
-                    loadingEl.remove();
+                if (loadingEl) loadingEl.remove();
+
+                if (!res.ok) {
+                    // 顯示後端回傳的錯誤訊息（例如 OpenRouter API 錯誤）
+                    const errMsg = data.reply || `HTTP 錯誤：${res.status}`;
+                    chatBox.innerHTML += `<div class="text-left"><span class="bg-red-100 text-red-800 px-3 py-1 rounded-lg inline-block whitespace-pre-wrap">${escapeHtml(errMsg)}</span></div>`;
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                    return;
                 }
 
                 // 顯示 AI 回覆
@@ -160,24 +364,126 @@
             } catch (error) {
                 console.error('發送消息失敗:', error);
                 
-                // 移除載入中
                 const loadingEl = document.getElementById(loadingId);
-                if (loadingEl) {
-                    loadingEl.remove();
-                }
+                if (loadingEl) loadingEl.remove();
 
-                // 顯示錯誤消息
                 chatBox.innerHTML += `<div class="text-left"><span class="bg-red-100 text-red-800 px-3 py-1 rounded-lg inline-block">❌ 請求失敗：${escapeHtml(error.message)}</span></div>`;
                 chatBox.scrollTop = chatBox.scrollHeight;
             }
         }
 
-        // HTML 轉義函數，防止 XSS
+        // HTML 轉義函數
         function escapeHtml(text) {
             const div = document.createElement('div');
             div.textContent = text;
             return div.innerHTML;
         }
+
+        // 分頁切換
+        function switchTab(name) {
+            ['chat','image','search','community'].forEach(t => {
+                const panel = document.getElementById('panel-' + t);
+                const tab = document.getElementById('tab-' + t);
+                if (panel) panel.classList.toggle('hidden', t !== name);
+                if (tab) {
+                    tab.classList.toggle('bg-blue-100', t === name);
+                    tab.classList.toggle('text-blue-800', t === name);
+                    tab.classList.toggle('border-b-2', t === name);
+                    tab.classList.toggle('border-blue-600', t === name);
+                    tab.classList.toggle('text-gray-600', t !== name);
+                }
+            });
+        }
+
+        function updateImageSizes() {
+            const model = document.getElementById('imageModel')?.value || 'dall-e-3';
+            const sel = document.getElementById('imageSize');
+            if (!sel) return;
+            const options = model === 'dall-e-2' ? [['256x256','256×256'],['512x512','512×512'],['1024x1024','1024×1024']] : [['1024x1024','1024×1024'],['1024x1792','1024×1792'],['1792x1024','1792×1024']];
+            sel.innerHTML = options.map(([v,l]) => '<option value="' + v + '">' + l + '</option>').join('');
+        }
+
+        // 圖片生成
+        async function generateImage() {
+            const prompt = document.getElementById('imagePrompt')?.value?.trim();
+            const resultEl = document.getElementById('imageResult');
+            if (!prompt) { resultEl.innerHTML = '<span class="text-red-600">請輸入圖片描述</span>'; return; }
+            resultEl.innerHTML = '<span class="text-gray-500">生成中…</span>';
+            try {
+                const model = document.getElementById('imageModel')?.value || 'dall-e-3';
+                const size = document.getElementById('imageSize')?.value || '1024x1024';
+                const res = await fetch('/api/image', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ prompt, model, size }) });
+                const data = await res.json().catch(() => ({}));
+                if (!res.ok) {
+                    resultEl.innerHTML = '<span class="text-red-600">' + escapeHtml(data.error || '生成失敗') + '</span>';
+                    return;
+                }
+                resultEl.innerHTML = '<img src="' + escapeHtml(data.url) + '" alt="Generated" class="max-w-full rounded-lg shadow">' + (data.revised_prompt ? '<p class="mt-2 text-xs text-gray-500">' + escapeHtml(data.revised_prompt) + '</p>' : '');
+            } catch (e) {
+                resultEl.innerHTML = '<span class="text-red-600">' + escapeHtml(e.message) + '</span>';
+            }
+        }
+
+        // 網絡搜索
+        async function doSearch() {
+            const query = document.getElementById('searchQuery')?.value?.trim();
+            const resultEl = document.getElementById('searchResults');
+            if (!query) { resultEl.innerHTML = '<span class="text-gray-500">請輸入關鍵字</span>'; return; }
+            resultEl.innerHTML = '<span class="text-gray-500">搜尋中…</span>';
+            try {
+                const res = await fetch('/api/search', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ query }) });
+                const data = await res.json().catch(() => ({}));
+                if (!res.ok) {
+                    resultEl.innerHTML = '<span class="text-red-600">' + escapeHtml(data.error || '搜尋失敗') + '</span>';
+                    return;
+                }
+                const list = (data.results || []).map(r => '<div class="border-b border-gray-200 pb-2"><a href="' + escapeHtml(r.url) + '" target="_blank" class="font-medium text-blue-600">' + escapeHtml(r.title) + '</a><p class="text-gray-600 mt-1">' + escapeHtml(r.snippet || '') + '</p></div>').join('') || '<span class="text-gray-500">無結果</span>';
+                resultEl.innerHTML = list;
+            } catch (e) {
+                resultEl.innerHTML = '<span class="text-red-600">' + escapeHtml(e.message) + '</span>';
+            }
+        }
+
+        // 社群小編：生成文案
+        async function communityCopy() {
+            const topic = document.getElementById('communityTopic')?.value?.trim() || '產品推廣';
+            const out = document.getElementById('communityOutput');
+            out.textContent = '生成文案中…';
+            try {
+                const res = await fetch('/api/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: '請幫我寫一段適合社群媒體（如 FB/IG）的貼文文案，主題：' + topic + '。要簡短、有 hashtag、吸引人。' }) });
+                const data = await res.json().catch(() => ({}));
+                out.textContent = !res.ok ? (data.reply || '請求失敗') : (data.reply || '無回覆');
+            } catch (e) { out.textContent = '錯誤：' + e.message; }
+        }
+
+        // 社群小編：生成配圖
+        async function communityImage() {
+            const prompt = document.getElementById('communityImagePrompt')?.value?.trim() || '社群貼文配圖，簡潔現代風格';
+            const out = document.getElementById('communityOutput');
+            out.textContent = '生成圖片中…';
+            try {
+                const res = await fetch('/api/image', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ prompt, model: 'dall-e-3', size: '1024x1024' }) });
+                const data = await res.json().catch(() => ({}));
+                if (!res.ok) { out.textContent = data.error || '生成失敗'; return; }
+                out.innerHTML = '<img src="' + escapeHtml(data.url) + '" alt="Generated" class="max-w-full rounded-lg shadow">';
+            } catch (e) { out.textContent = '錯誤：' + e.message; }
+        }
+
+        // 社群小編：熱門話題
+        async function communityTrending() {
+            const out = document.getElementById('communityOutput');
+            out.textContent = '搜尋熱門趨勢中…';
+            try {
+                const res = await fetch('/api/search', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ query: '熱門 趨勢 今日' }) });
+                const data = await res.json().catch(() => ({}));
+                if (!res.ok) { out.textContent = data.error || '搜尋失敗'; return; }
+                const list = (data.results || []).slice(0, 8).map((r, i) => (i + 1) + '. ' + r.title + '\n   ' + (r.snippet || '')).join('\n\n');
+                out.textContent = list || '無結果，可改在「網絡搜索」頁輸入更具體關鍵字。';
+            } catch (e) { out.textContent = '錯誤：' + e.message; }
+        }
+
+        // 初始化
+        loadSettings();
     </script>
 </body>
 </html>
